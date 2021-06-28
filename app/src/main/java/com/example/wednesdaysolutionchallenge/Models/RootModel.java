@@ -14,7 +14,7 @@ public class RootModel {
 
     @SerializedName("results")
     @Expose
-    public ArrayList<Result> results ;
+    public ArrayList<Result> results = new ArrayList<>() ;
 
 
     public RootModel(int resultCount, ArrayList<Result> results) {
