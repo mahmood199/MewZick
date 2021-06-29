@@ -78,8 +78,8 @@ public class Result
     public String primaryGenreName ;
     public String contentAdvisoryRating ;
     public String artworkUrl600 ;
-    public ArrayList<String> genreIds ;
-    public ArrayList<String> genres ;
+    /*public ArrayList<String> genreIds ;
+    public ArrayList<String> genres ;*/
 
 
     @SerializedName("previewUrl")
@@ -372,7 +372,7 @@ public class Result
         this.artworkUrl600 = artworkUrl600;
     }
 
-    public ArrayList<String> getGenreIds() {
+/*    public ArrayList<String> getGenreIds() {
         return genreIds;
     }
 
@@ -386,7 +386,7 @@ public class Result
 
     public void setGenres(ArrayList<String> genres) {
         this.genres = genres;
-    }
+    }*/
 
     public String getPreviewUrl() {
         return previewUrl;

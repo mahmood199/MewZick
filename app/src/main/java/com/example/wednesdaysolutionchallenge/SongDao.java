@@ -10,6 +10,7 @@ import androidx.room.Update;
 import com.example.wednesdaysolutionchallenge.Models.Result;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Dao
 public interface SongDao {
@@ -25,7 +26,7 @@ public interface SongDao {
     void delete(Result result);
 
     @Query("SELECT * FROM songs_table ORDER BY trackName ASC")
-    LiveData<ArrayList<Result>> getAllsongs();
+    LiveData<List<Result>> getAllsongs();
 
 
     @Query("DELETE FROM songs_table")
