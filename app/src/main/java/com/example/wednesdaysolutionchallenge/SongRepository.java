@@ -28,6 +28,12 @@ public class SongRepository {
 
     }
 
+
+    public void insertAll(ArrayList<Result> resultArrayList) {
+
+    }
+
+
     public void update(Result result) {
         UpdateSongAsyncTask insertSongAsyncTask = new UpdateSongAsyncTask(songDao);
         insertSongAsyncTask.execute(result);
@@ -39,8 +45,21 @@ public class SongRepository {
     }
 
     public void deleteAll() {
-        DeleteAllSongAsyncTask insertSongAsyncTask = new DeleteAllSongAsyncTask(songDao);
-        insertSongAsyncTask.execute();
+        DeleteAllSongAsyncTask deleteAllSongAsyncTask = new DeleteAllSongAsyncTask(songDao);
+        deleteAllSongAsyncTask.execute();
+    }
+
+    public void putSearchedResultToDatabase() {
+        ArrayList<Result> resultArrayList = new ArrayList<>();
+
+        //getArraylist from Api
+
+
+
+        //
+
+        InsertAllSongAsyncTask insertAllSongAsyncTask = new InsertAllSongAsyncTask(songDao);
+        insertAllSongAsyncTask.execute(resultArrayList);
     }
 
 
@@ -112,5 +131,27 @@ public class SongRepository {
         }
     }
 
+
+    public static class InsertAllSongAsyncTask extends AsyncTask<ArrayList<Result>, Void, Void> {
+
+        private SongDao songDao;
+
+        public InsertAllSongAsyncTask(SongDao songDao) {
+            this.songDao = songDao;
+        }
+
+
+        @Override
+        protected Void doInBackground(ArrayList<Result>... arrayLists) {
+
+            ArrayList<Result> resultArrayList = arrayLists[0];
+
+            for (Result result : resultArrayList) {
+                songDao.insert(result);
+            }
+
+            return null;
+        }
+    }
 
 }

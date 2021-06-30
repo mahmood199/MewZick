@@ -7,7 +7,10 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.wednesdaysolutionchallenge.Adapter.SongsAdapter;
@@ -15,8 +18,10 @@ import com.example.wednesdaysolutionchallenge.Models.Result;
 import com.example.wednesdaysolutionchallenge.Models.RootModel;
 import com.example.wednesdaysolutionchallenge.Networking.RetrofitClient;
 import com.example.wednesdaysolutionchallenge.Networking.TunesApi;
+import com.example.wednesdaysolutionchallenge.ViewModal.SongViewModel;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -27,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView songs_recyclerView;
     EditText editText;
     Button button;
+    SongViewModel songViewModel;
 
 
     @Override
@@ -37,6 +43,19 @@ public class MainActivity extends AppCompatActivity {
         songs_recyclerView = findViewById(R.id.songs_recyclerView);
         editText = findViewById(R.id.editText);
         button = findViewById(R.id.button);
+        songViewModel = new ViewModelProvider(this).get(SongViewModel.class);
+
+        songViewModel.getAllResult().observe(this, new Observer<List<Result>>() {
+            @Override
+            public void onChanged(List<Result> results) {
+                Toast.makeText(MainActivity.this,"Running",Toast.LENGTH_SHORT).show();
+
+                ArrayList<Result> arrayList = new ArrayList<>(results);
+
+                songs_recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this,LinearLayoutManager.VERTICAL,false));;
+                songs_recyclerView.setAdapter(new SongsAdapter(MainActivity.this,arrayList));
+            }
+        });
 
         TunesApi tunesApi = RetrofitClient.getRetrofitInstance().create(TunesApi.class);
 
