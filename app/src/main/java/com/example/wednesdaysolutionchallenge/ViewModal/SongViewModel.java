@@ -33,12 +33,16 @@ public class SongViewModel extends AndroidViewModel {
     }
 
 
-    public void insertAll(ArrayList <Result> resultArrayList){
+    public void insertAll(ArrayList<Result> resultArrayList) {
         songRepository.insertAll(resultArrayList);
     }
 
-    public LiveData<List<Result>> getAllResult(){
+    public LiveData<List<Result>> getAllResult() {
         return listLiveData;
+    }
+
+    public ArrayList<Result> getAllFromWebService(ArrayList<String> arrayList) {
+        return songRepository.getAllSongs(arrayList);
     }
 
 }

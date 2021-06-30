@@ -77,7 +77,13 @@ public class MainActivity extends AppCompatActivity {
                     word.append(string.charAt(i));
                 }
 
-                Call<RootModel> call = tunesApi.getSongs(arrayList);
+                ArrayList<Result> resultArrayList = new ArrayList<>();
+                resultArrayList = songViewModel.getAllFromWebService(arrayList);
+
+                songs_recyclerView.setLayoutManager(new GridLayoutManager(MainActivity.this,2));
+                songs_recyclerView.setAdapter(new SongsAdapter(MainActivity.this,resultArrayList));
+
+                /*Call<RootModel> call = tunesApi.getSongs(arrayList);
 
                 call.enqueue(new Callback<RootModel>() {
                     @Override
@@ -107,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                 });
-
+*/
             }
         });
 

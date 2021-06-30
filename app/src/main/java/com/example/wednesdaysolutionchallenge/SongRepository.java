@@ -2,24 +2,35 @@ package com.example.wednesdaysolutionchallenge;
 
 import android.app.Application;
 import android.os.AsyncTask;
+import android.widget.Toast;
 
 import androidx.lifecycle.LiveData;
 
 import com.example.wednesdaysolutionchallenge.Models.Result;
+import com.example.wednesdaysolutionchallenge.Models.RootModel;
+import com.example.wednesdaysolutionchallenge.Networking.RetrofitClient;
+import com.example.wednesdaysolutionchallenge.Networking.TunesApi;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class SongRepository {
 
     public SongDao songDao;
-
+    public TunesApi tunesApi;
     public LiveData<List<Result>> arrayListLiveData;
+    public Application application;
 
     public SongRepository(Application application) {
+        this.application = application;
         SongDatabase songDatabase = SongDatabase.getInstance(application);
         songDao = songDatabase.songDao();
         arrayListLiveData = songDao.getAllsongs();
+        tunesApi = RetrofitClient.getRetrofitInstance().create(TunesApi.class);
     }
 
     public void insert(Result result) {
@@ -55,16 +66,42 @@ public class SongRepository {
         //getArraylist from Api
 
 
-
         //
 
         InsertAllSongAsyncTask insertAllSongAsyncTask = new InsertAllSongAsyncTask(songDao);
         insertAllSongAsyncTask.execute(resultArrayList);
     }
 
-
     public LiveData<List<Result>> getAllSongs() {
         return arrayListLiveData;
+    }
+
+
+    public ArrayList getAllSongs(ArrayList<String> stringArrayList) {
+
+        final ArrayList[] arrayList = new ArrayList[]{new ArrayList<>()};
+        final RootModel[] rootModel = new RootModel[1];
+
+        final Call<RootModel>[] rootModelCall = new Call[]{tunesApi.getSongs(stringArrayList)};
+        rootModelCall[0].enqueue(new Callback<RootModel>() {
+            @Override
+            public void onResponse(Call<RootModel> call, Response<RootModel> response) {
+                if (!response.isSuccessful()) {
+                    Toast.makeText(application, "Network operation failed", Toast.LENGTH_SHORT).show();
+                }
+
+                assert response.body() != null;
+                arrayList[0] = response.body().getResults();
+            }
+
+            @Override
+            public void onFailure(Call<RootModel> call, Throwable t) {
+                Toast.makeText(application, "Network operation failed", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+        return arrayList[0];
     }
 
 
