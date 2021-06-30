@@ -1,6 +1,7 @@
 package com.example.wednesdaysolutionchallenge.ViewModal;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -42,7 +43,11 @@ public class SongViewModel extends AndroidViewModel {
     }
 
     public ArrayList<Result> getAllFromWebService(ArrayList<String> arrayList) {
-        return songRepository.getAllSongs(arrayList);
+
+        ArrayList<Result> resultArrayList;
+        resultArrayList = songRepository.getAllSongs(arrayList);
+        Log.i("TAGTAGViewModel", String.valueOf(resultArrayList.size()));
+        return resultArrayList;
     }
 
 }

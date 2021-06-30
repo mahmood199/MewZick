@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.wednesdaysolutionchallenge.Models.Result;
 import com.example.wednesdaysolutionchallenge.R;
+import com.example.wednesdaysolutionchallenge.ViewModal.SongViewModel;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -22,8 +24,10 @@ public class SongsAdapter extends RecyclerView.Adapter<SongsAdapter.ViewHolder> 
 
     Context context;
     ArrayList<Result> arrayList = new ArrayList<>();
+    SongViewModel songViewModel;
 
-    public SongsAdapter(Context context, ArrayList<Result> arrayList) {
+    public SongsAdapter(Context context, ArrayList<Result> arrayList,SongViewModel songViewModel) {
+        this.songViewModel = songViewModel;
         this.context = context;
         this.arrayList = arrayList;
     }
@@ -45,6 +49,14 @@ public class SongsAdapter extends RecyclerView.Adapter<SongsAdapter.ViewHolder> 
                 .into(holder.imageView);
 
         holder.song_name.setText(result.trackName);
+
+        holder.imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                songViewModel.insert(arrayList.get(position));
+                Toast.makeText(context,"Saved to database",Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
     }

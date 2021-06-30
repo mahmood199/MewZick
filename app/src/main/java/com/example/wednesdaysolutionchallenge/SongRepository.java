@@ -2,6 +2,7 @@ package com.example.wednesdaysolutionchallenge;
 
 import android.app.Application;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.lifecycle.LiveData;
@@ -77,21 +78,30 @@ public class SongRepository {
     }
 
 
-    public ArrayList getAllSongs(ArrayList<String> stringArrayList) {
+    public ArrayList<Result> getAllSongs(ArrayList<String> stringArrayList) {
 
-        final ArrayList[] arrayList = new ArrayList[]{new ArrayList<>()};
-        final RootModel[] rootModel = new RootModel[1];
+        ArrayList<Result> arrayList = new ArrayList<>();
+        RootModel rootModel;
 
-        final Call<RootModel>[] rootModelCall = new Call[]{tunesApi.getSongs(stringArrayList)};
-        rootModelCall[0].enqueue(new Callback<RootModel>() {
+        Call<RootModel> rootModelCall = tunesApi.getSongs(stringArrayList);
+        rootModelCall.enqueue(new Callback<RootModel>() {
             @Override
             public void onResponse(Call<RootModel> call, Response<RootModel> response) {
                 if (!response.isSuccessful()) {
                     Toast.makeText(application, "Network operation failed", Toast.LENGTH_SHORT).show();
                 }
+                Toast.makeText(application, "Network operation Succesful", Toast.LENGTH_SHORT).show();
 
-                assert response.body() != null;
-                arrayList[0] = response.body().getResults();
+
+                if (response.body() != null) {
+                    response.body().setResults(response.body().results);
+
+                    for (Result result : response.body().results) {
+                        Log.i("TAGTAGRepository", result.artistName);
+                    }
+
+                    arrayList.addAll(response.body().results);
+                }
             }
 
             @Override
@@ -100,8 +110,8 @@ public class SongRepository {
             }
         });
 
-
-        return arrayList[0];
+        Log.i("TAGTAGRepository", String.valueOf(arrayList.size()));
+        return arrayList;
     }
 
 

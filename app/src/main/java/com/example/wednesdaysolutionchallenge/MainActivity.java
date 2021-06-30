@@ -1,6 +1,7 @@
 package com.example.wednesdaysolutionchallenge;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -48,12 +49,12 @@ public class MainActivity extends AppCompatActivity {
         songViewModel.getAllResult().observe(this, new Observer<List<Result>>() {
             @Override
             public void onChanged(List<Result> results) {
-                Toast.makeText(MainActivity.this,"Running",Toast.LENGTH_SHORT).show();
+                /*Toast.makeText(MainActivity.this,"Running",Toast.LENGTH_SHORT).show();*/
 
                 ArrayList<Result> arrayList = new ArrayList<>(results);
 
                 songs_recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this,LinearLayoutManager.VERTICAL,false));;
-                songs_recyclerView.setAdapter(new SongsAdapter(MainActivity.this,arrayList));
+                songs_recyclerView.setAdapter(new SongsAdapter(MainActivity.this,arrayList,songViewModel));
             }
         });
 
@@ -80,8 +81,15 @@ public class MainActivity extends AppCompatActivity {
                 ArrayList<Result> resultArrayList = new ArrayList<>();
                 resultArrayList = songViewModel.getAllFromWebService(arrayList);
 
+                for(Result result : resultArrayList){
+                    Log.i("TAGTAGMainActivity", result.getTrackName());
+                    Log.i("TAGTAGMainActivity",result.getArtworkUrl100());
+                }
+
+
+
                 songs_recyclerView.setLayoutManager(new GridLayoutManager(MainActivity.this,2));
-                songs_recyclerView.setAdapter(new SongsAdapter(MainActivity.this,resultArrayList));
+                songs_recyclerView.setAdapter(new SongsAdapter(MainActivity.this,resultArrayList,songViewModel));
 
                 /*Call<RootModel> call = tunesApi.getSongs(arrayList);
 
