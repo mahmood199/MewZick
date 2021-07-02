@@ -1,6 +1,9 @@
 package com.example.wednesdaysolutionchallenge.ViewModal;
 
 import android.app.Application;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -19,11 +22,12 @@ public class SongViewModel extends AndroidViewModel {
 
     SongRepository songRepository;
     LiveData<List<Result>> listLiveData;
+    Application application;
 
     public SongViewModel(@NonNull @NotNull Application application) {
         super(application);
 
-
+        this.application = application;
         songRepository = new SongRepository(application);
         listLiveData = songRepository.getAllSongs();
     }
@@ -44,10 +48,28 @@ public class SongViewModel extends AndroidViewModel {
 
     public ArrayList<Result> getAllFromWebService(ArrayList<String> arrayList) {
 
-        ArrayList<Result> resultArrayList;
-        resultArrayList = songRepository.getAllSongs(arrayList);
-        Log.i("TAGTAGViewModel", String.valueOf(resultArrayList.size()));
+        ArrayList<Result> resultArrayList = new ArrayList<>();
+        Result result = new Result();
+        result.setTrackName("NO_INTERNET");
+
+
+        if (isNetworkAvailable()) {
+            resultArrayList = songRepository.getAllSongs(arrayList);
+            Log.i("TAGTAGViewModel", String.valueOf(resultArrayList.size()));
+        } else
+            resultArrayList.add(result);
+
+
         return resultArrayList;
     }
+
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) application.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
 
 }

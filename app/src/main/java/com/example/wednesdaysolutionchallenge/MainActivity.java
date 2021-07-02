@@ -1,8 +1,11 @@
 package com.example.wednesdaysolutionchallenge;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -11,12 +14,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.wednesdaysolutionchallenge.Adapter.SongsAdapter;
 import com.example.wednesdaysolutionchallenge.Models.Result;
-import com.example.wednesdaysolutionchallenge.Models.RootModel;
 import com.example.wednesdaysolutionchallenge.Networking.RetrofitClient;
 import com.example.wednesdaysolutionchallenge.Networking.TunesApi;
 import com.example.wednesdaysolutionchallenge.ViewModal.SongViewModel;
@@ -24,15 +25,11 @@ import com.example.wednesdaysolutionchallenge.ViewModal.SongViewModel;
 import java.util.ArrayList;
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 public class MainActivity extends AppCompatActivity {
 
     RecyclerView songs_recyclerView;
     EditText editText;
-    Button button;
+    Button button,button2;
     SongViewModel songViewModel;
 
 
@@ -44,27 +41,24 @@ public class MainActivity extends AppCompatActivity {
         songs_recyclerView = findViewById(R.id.songs_recyclerView);
         editText = findViewById(R.id.editText);
         button = findViewById(R.id.button);
+        button2 = findViewById(R.id.button2);
+
         songViewModel = new ViewModelProvider(this).get(SongViewModel.class);
 
-        songViewModel.getAllResult().observe(this, new Observer<List<Result>>() {
+        TunesApi tunesApi = RetrofitClient.getRetrofitInstance().create(TunesApi.class);
+
+        button2.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onChanged(List<Result> results) {
-                /*Toast.makeText(MainActivity.this,"Running",Toast.LENGTH_SHORT).show();*/
-
-                ArrayList<Result> arrayList = new ArrayList<>(results);
-
-                songs_recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this,LinearLayoutManager.VERTICAL,false));;
-                songs_recyclerView.setAdapter(new SongsAdapter(MainActivity.this,arrayList,songViewModel));
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this,MainActivity2.class));
             }
         });
-
-        TunesApi tunesApi = RetrofitClient.getRetrofitInstance().create(TunesApi.class);
 
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                closeSoftkeyboard();
                 String string = editText.getText().toString().trim();
                 ArrayList<String> arrayList = new ArrayList<>();
                 string = string.concat(" ");
@@ -81,15 +75,23 @@ public class MainActivity extends AppCompatActivity {
                 ArrayList<Result> resultArrayList = new ArrayList<>();
                 resultArrayList = songViewModel.getAllFromWebService(arrayList);
 
-                for(Result result : resultArrayList){
+
+                if (resultArrayList.size() == 1 && resultArrayList.get(0).getTrackName().equals("NO_INTERNET")) {
+                    Toast.makeText(MainActivity.this, "No Internnet Available", Toast.LENGTH_SHORT).show();
+
+                    return;
+                }
+
+                for (Result result : resultArrayList) {
                     Log.i("TAGTAGMainActivity", result.getTrackName());
-                    Log.i("TAGTAGMainActivity",result.getArtworkUrl100());
+                    Log.i("TAGTAGMainActivity", result.getArtworkUrl100());
                 }
 
 
+                songs_recyclerView.setLayoutManager(new GridLayoutManager(MainActivity.this, 2));
+                songs_recyclerView.setAdapter(new SongsAdapter(MainActivity.this, resultArrayList, songViewModel));
 
-                songs_recyclerView.setLayoutManager(new GridLayoutManager(MainActivity.this,2));
-                songs_recyclerView.setAdapter(new SongsAdapter(MainActivity.this,resultArrayList,songViewModel));
+
 
                 /*Call<RootModel> call = tunesApi.getSongs(arrayList);
 
@@ -122,9 +124,23 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 */
+
+
+
+
             }
         });
 
+
+    }
+
+    private void closeSoftkeyboard() {
+
+        View view = editText;
+        if (view != null) {
+            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 69);
+        }
 
     }
 }

@@ -83,6 +83,10 @@ public class SongRepository {
         ArrayList<Result> arrayList = new ArrayList<>();
         RootModel rootModel;
 
+
+
+
+
         Call<RootModel> rootModelCall = tunesApi.getSongs(stringArrayList);
         rootModelCall.enqueue(new Callback<RootModel>() {
             @Override
@@ -101,18 +105,26 @@ public class SongRepository {
                     }
 
                     arrayList.addAll(response.body().results);
+
                 }
             }
 
             @Override
             public void onFailure(Call<RootModel> call, Throwable t) {
                 Toast.makeText(application, "Network operation failed", Toast.LENGTH_SHORT).show();
+
+
+
+
             }
         });
 
         Log.i("TAGTAGRepository", String.valueOf(arrayList.size()));
         return arrayList;
     }
+
+
+
 
 
     private static class InsertSongAsyncTask extends AsyncTask<Result, Void, Void> {
