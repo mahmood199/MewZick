@@ -3,6 +3,7 @@ package com.example.wednesdaysolutionchallenge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -41,7 +42,7 @@ public class MainActivity2 extends AppCompatActivity {
 
                 ArrayList<Result> arrayList = new ArrayList<>(results);
 
-                showDataRecyclerView.setLayoutManager(new LinearLayoutManager(MainActivity2.this, LinearLayoutManager.VERTICAL,false));;
+                showDataRecyclerView.setLayoutManager(new GridLayoutManager(MainActivity2.this,2));
                 showDataRecyclerView.setAdapter(new SongsAdapter(MainActivity2.this,arrayList,songViewModel));
             }
         });

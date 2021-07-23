@@ -12,9 +12,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.wednesdaysolutionchallenge.MainActivity;
 import com.example.wednesdaysolutionchallenge.Models.Result;
 import com.example.wednesdaysolutionchallenge.R;
 import com.example.wednesdaysolutionchallenge.ViewModal.SongViewModel;
+import com.google.android.material.button.MaterialButton;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -53,11 +55,18 @@ public class SongsAdapter extends RecyclerView.Adapter<SongsAdapter.ViewHolder> 
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                songViewModel.insert(arrayList.get(position));
+
+                if(context instanceof MainActivity)
+                    songViewModel.insert(arrayList.get(position));
+
                 Toast.makeText(context,"Saved to database",Toast.LENGTH_SHORT).show();
             }
         });
 
+
+        holder.save_song_button.setOnClickListener(v -> {
+            Toast.makeText(context,arrayList.get(position).getTrackName()+"saved",Toast.LENGTH_SHORT).show();
+        });
 
     }
 
@@ -70,6 +79,7 @@ public class SongsAdapter extends RecyclerView.Adapter<SongsAdapter.ViewHolder> 
 
         ImageView imageView;
         TextView song_name;
+        MaterialButton save_song_button;
 
 
         public ViewHolder(@NonNull @NotNull View itemView) {
@@ -77,6 +87,7 @@ public class SongsAdapter extends RecyclerView.Adapter<SongsAdapter.ViewHolder> 
 
             imageView = itemView.findViewById(R.id.imageView);
             song_name = itemView.findViewById(R.id.song_name);
+            save_song_button = itemView.findViewById(R.id.save_song_button);
 
         }
     }
