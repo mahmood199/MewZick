@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.wednesdaysolutionchallenge.MainActivity;
-import com.example.wednesdaysolutionchallenge.Models.Result;
+import com.example.wednesdaysolutionchallenge.Models.ItunesModels.Result;
 import com.example.wednesdaysolutionchallenge.R;
 import com.example.wednesdaysolutionchallenge.ViewModal.SongViewModel;
 import com.google.android.material.button.MaterialButton;
@@ -22,13 +22,13 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
-public class SongsAdapter extends RecyclerView.Adapter<SongsAdapter.ViewHolder> {
+public class ITunesSongsAdapter extends RecyclerView.Adapter<ITunesSongsAdapter.ViewHolder> {
 
     Context context;
     ArrayList<Result> arrayList = new ArrayList<>();
     SongViewModel songViewModel;
 
-    public SongsAdapter(Context context, ArrayList<Result> arrayList,SongViewModel songViewModel) {
+    public ITunesSongsAdapter(Context context, ArrayList<Result> arrayList, SongViewModel songViewModel) {
         this.songViewModel = songViewModel;
         this.context = context;
         this.arrayList = arrayList;

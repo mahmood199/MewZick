@@ -7,10 +7,10 @@ import android.widget.Toast;
 
 import androidx.lifecycle.LiveData;
 
-import com.example.wednesdaysolutionchallenge.Models.Result;
-import com.example.wednesdaysolutionchallenge.Models.RootModel;
-import com.example.wednesdaysolutionchallenge.Networking.RetrofitClient;
-import com.example.wednesdaysolutionchallenge.Networking.TunesApi;
+import com.example.wednesdaysolutionchallenge.Models.ItunesModels.Result;
+import com.example.wednesdaysolutionchallenge.Models.ItunesModels.RootModel;
+import com.example.wednesdaysolutionchallenge.Networking.ITunes.RetrofitClient;
+import com.example.wednesdaysolutionchallenge.Networking.ITunes.TunesApi;
 
 import java.util.ArrayList;
 import java.util.List;

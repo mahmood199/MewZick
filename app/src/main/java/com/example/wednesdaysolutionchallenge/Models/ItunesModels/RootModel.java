@@ -1,4 +1,4 @@
-package com.example.wednesdaysolutionchallenge.Models;
+package com.example.wednesdaysolutionchallenge.Models.ItunesModels;
 
 
 import com.google.gson.annotations.Expose;

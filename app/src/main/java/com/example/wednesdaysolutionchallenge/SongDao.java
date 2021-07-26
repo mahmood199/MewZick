@@ -7,9 +7,8 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import com.example.wednesdaysolutionchallenge.Models.Result;
+import com.example.wednesdaysolutionchallenge.Models.ItunesModels.Result;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Dao

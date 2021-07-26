@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-import com.example.wednesdaysolutionchallenge.Models.Result;
+import com.example.wednesdaysolutionchallenge.Models.ItunesModels.Result;
 import com.example.wednesdaysolutionchallenge.SongRepository;
 
 import org.jetbrains.annotations.NotNull;

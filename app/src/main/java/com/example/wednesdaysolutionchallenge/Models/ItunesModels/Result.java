@@ -1,4 +1,4 @@
-package com.example.wednesdaysolutionchallenge.Models;
+package com.example.wednesdaysolutionchallenge.Models.ItunesModels;
 
 
 import androidx.room.Entity;

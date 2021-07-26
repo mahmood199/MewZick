@@ -9,7 +9,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-import com.example.wednesdaysolutionchallenge.Models.Result;
+import com.example.wednesdaysolutionchallenge.Models.ItunesModels.Result;
 
 import org.jetbrains.annotations.NotNull;
 
